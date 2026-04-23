@@ -6,4 +6,7 @@
     <AssemblyName>AuraLabsLicenseApi</AssemblyName>
     <RootNamespace>AuraLabsLicenseApi</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Services\AdminAuthService.cs" />
+  </ItemGroup>
 </Project>

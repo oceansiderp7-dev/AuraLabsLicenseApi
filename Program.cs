@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddHttpClient<SupabaseRestClient>();
 builder.Services.AddSingleton<LicenseKeyService>();
-builder.Services.AddSingleton<AdminAuthService>();
+builder.Services.AddSingleton<AdminAccessService>();
 builder.Services.AddScoped<LicenseRepository>();
 builder.Services.AddScoped<LicenseWorkflowService>();
 
@@ -47,7 +47,7 @@ app.MapPost("/api/license/activate", async (
 
 app.MapPost("/api/admin/login", (
     AdminLoginRequest request,
-    AdminAuthService auth) =>
+    AdminAccessService auth) =>
 {
     return auth.IsValid(request.Password)
         ? Results.Ok(new { ok = true, message = "Admin unlocked." })
@@ -56,7 +56,7 @@ app.MapPost("/api/admin/login", (
 
 app.MapGet("/api/admin/licenses", async (
     HttpRequest request,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseRepository repository,
     CancellationToken cancellationToken) =>
 {
@@ -72,7 +72,7 @@ app.MapGet("/api/admin/licenses", async (
 app.MapPost("/api/admin/licenses/generate", async (
     HttpRequest httpRequest,
     GenerateLicensesRequest request,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseWorkflowService workflow,
     CancellationToken cancellationToken) =>
 {
@@ -88,7 +88,7 @@ app.MapPost("/api/admin/licenses/generate", async (
 app.MapPost("/api/admin/licenses/{licenseId:guid}/revoke", async (
     Guid licenseId,
     HttpRequest request,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseRepository repository,
     CancellationToken cancellationToken) =>
 {
@@ -105,7 +105,7 @@ app.MapPost("/api/admin/licenses/{licenseId:guid}/revoke", async (
 app.MapPost("/api/admin/licenses/{licenseId:guid}/restore", async (
     Guid licenseId,
     HttpRequest request,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseRepository repository,
     CancellationToken cancellationToken) =>
 {
@@ -123,7 +123,7 @@ app.MapPost("/api/admin/licenses/{licenseId:guid}/extend", async (
     Guid licenseId,
     ExtendLicenseRequest request,
     HttpRequest httpRequest,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseRepository repository,
     CancellationToken cancellationToken) =>
 {
@@ -160,7 +160,7 @@ app.MapPost("/api/admin/licenses/{licenseId:guid}/extend", async (
 app.MapPost("/api/admin/licenses/{licenseId:guid}/reset-hwid", async (
     Guid licenseId,
     HttpRequest request,
-    AdminAuthService auth,
+    AdminAccessService auth,
     LicenseRepository repository,
     CancellationToken cancellationToken) =>
 {
